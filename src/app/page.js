@@ -1,69 +1,113 @@
-import Image from "next/image";
+import Link from 'next/link';
+import Image from 'next/image';
+import BotonAgregar from '@/components/BotonAgregar';
 
-export default function Home() {
+const resplandores = [
+  { clave: 'luffy', color: '#D4A034' },
+  { clave: 'zoro', color: '#4A7C59' },
+  { clave: 'nami', color: '#E8964A' },
+  { clave: 'robin', color: '#8B6FB0' },
+  { clave: 'sanji', color: '#4A6FA5' },
+  { clave: 'chopper', color: '#E89BAF' },
+];
+
+const resplandorPorNombre = (nombre) => {
+  const nombreMinuscula = nombre?.toLowerCase() ?? '';
+  return resplandores.find((r) => nombreMinuscula.includes(r.clave))?.color ?? '#D4A034';
+};
+
+// Mapeo nombre -> archivo de imagen en /public
+// Si el personaje no tiene imagen propia todavía, cae en el logo como placeholder
+const imagenes = [
+  { clave: 'luffy', archivo: '/luffy.png' },
+  { clave: 'zoro', archivo: '/zoro.png' },
+  { clave: 'nami', archivo: '/nami.png' },
+  { clave: 'robin', archivo: '/robin.png' },
+  { clave: 'sanji', archivo: '/sanji2.png' },
+  { clave: 'chopper', archivo: '/chopper.png' },
+];
+
+const imagenPorNombre = (nombre) => {
+  const nombreMinuscula = nombre?.toLowerCase() ?? '';
+  return imagenes.find((i) => nombreMinuscula.includes(i.clave))?.archivo ?? '/logo.png';
+};
+
+const imagenDe = (personaje) => {
+  if (personaje?.imagen && String(personaje.imagen).startsWith('http')) {
+    return personaje.imagen;
+  }
+  if (personaje?.imagen) {
+    return `/${personaje.imagen}`;
+  }
+  return imagenPorNombre(personaje?.nombre);
+};
+
+async function obtenerPersonajes() {
+  const respuesta = await fetch('http://localhost:3000/personajes', {
+    cache: 'no-store'
+  });
+  const datos = await respuesta.json();
+  return datos;
+}
+
+export default async function Home() {
+  const personajes = await obtenerPersonajes();
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.js
-            </code>{" "}
-            file.
+    <main className="min-h-screen bg-navy p-8">
+      <div className="flex items-center justify-between gap-6 mb-10">
+        <div className="flex items-center gap-3 min-w-0">
+          <span className="text-3xl">🏴‍☠️</span>
+          <h1 className="font-title text-3xl font-bold text-white whitespace-nowrap">
+            Personajes de One Piece
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+        <div className="relative">
+          <svg
+            className="w-5 h-5 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
           >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            <circle cx="11" cy="11" r="7" />
+            <path d="m21 21-4.3-4.3" strokeLinecap="round" />
+          </svg>
+          <input
+            type="search"
+            placeholder="Buscar personaje..."
+            className="bg-white/10 rounded-full pl-10 pr-4 py-2 text-white placeholder-gray-400 outline-none focus:bg-white/15 w-64"
+          />
         </div>
-      </main>
-    </div>
+
+        <BotonAgregar href="/personajes/nuevo">Agregar personaje</BotonAgregar>
+      </div>
+
+      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {personajes.map((personaje) => (
+          <li key={personaje._id}>
+            <Link
+              href={`/personajes/${personaje._id}`}
+              className="block bg-white rounded-xl overflow-hidden hover:-translate-y-1 transition-transform"
+              style={{ boxShadow: `0 8px 24px ${resplandorPorNombre(personaje.nombre)}` }}
+            >
+              <div className="h-64 bg-white relative p-3">
+                <Image
+                  src={imagenDe(personaje)}
+                  alt={personaje.nombre}
+                  fill
+                  className="object-contain"
+                />
+              </div>
+              <div className="p-4">
+                <p className="font-bold text-ink">{personaje.nombre}</p>
+                <p className="text-sm text-secondary">{personaje.tripulacion}</p>
+              </div>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </main>
   );
 }
