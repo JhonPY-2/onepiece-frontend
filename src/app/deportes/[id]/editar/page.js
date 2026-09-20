@@ -112,6 +112,10 @@ export default function EditarDeporte() {
       });
 
       if (!respuesta.ok) {
+        if (respuesta.status === 413) {
+          const datosError = await respuesta.json();
+          throw new Error(datosError?.mensaje ?? 'La imagen no puede superar los 5MB');
+        }
         throw new Error('No se pudo editar el atleta');
       }
 
