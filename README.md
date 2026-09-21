@@ -11,4 +11,4 @@ npm run dev
 
 Abre http://localhost:3001. Espera el backend en `http://localhost:3000` (no usa variables de entorno).
 
-> Consulta el README principal del proyecto en `../onepiece-app/README.md`.
+> Consulta el README principal del proyecto en [README principal (repositorio mongo-crud)](https://github.com/JhonPY-2/mongo-crud).
