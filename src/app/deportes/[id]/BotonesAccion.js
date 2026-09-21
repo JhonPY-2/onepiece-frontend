@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from "next/navigation";
 import useAuth from '@/hooks/useAuth';
 import ModalConfirmarBorrado from '@/components/ModalConfirmarBorrado';
+import { API_URL } from '@/lib/api';
 
 export default function BotonesAccionDeporte({ id }) {
   const router = useRouter();
@@ -14,7 +15,7 @@ export default function BotonesAccionDeporte({ id }) {
 
   async function manejarEliminar() {
     try {
-      const respuesta = await fetch(`http://localhost:3000/atletas/${id}`, {
+      const respuesta = await fetch(`${API_URL}/atletas/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`

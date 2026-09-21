@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { API_URL } from '@/lib/api';
 
 export default function CompletarPerfil() {
   const router = useRouter();
@@ -24,7 +25,7 @@ export default function CompletarPerfil() {
 
     try {
       const token = localStorage.getItem('token');
-      const respuesta = await fetch('http://localhost:3000/auth/completar-perfil', {
+      const respuesta = await fetch(`${API_URL}/auth/completar-perfil`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

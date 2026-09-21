@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import BotonAgregar from '@/components/BotonAgregar';
+import { API_URL } from '@/lib/api';
 
 const resplandores = [
   { clave: 'luffy', color: '#D4A034' },
@@ -43,7 +44,7 @@ const imagenDe = (personaje) => {
 };
 
 async function obtenerPersonajes() {
-  const respuesta = await fetch('http://localhost:3000/personajes', {
+  const respuesta = await fetch(`${API_URL}/personajes`, {
     cache: 'no-store'
   });
   const datos = await respuesta.json();

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import useAuth from '@/hooks/useAuth';
 import SelectorImagen from '@/components/SelectorImagen';
+import { API_URL } from '@/lib/api';
 
 const poolHabilidades = ['Velocidad', 'Fuerza', 'Defensa', 'Agilidad', 'Técnica', 'Resistencia', 'Potencia'];
 
@@ -73,7 +74,7 @@ export default function NuevoDeporte() {
         formData.append('imagen', archivo);
       }
 
-      const respuesta = await fetch('http://localhost:3000/atletas', {
+      const respuesta = await fetch(`${API_URL}/atletas`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`

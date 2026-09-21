@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import BotonAgregar from '@/components/BotonAgregar';
+import { API_URL } from '@/lib/api';
 
 const colores = [
   { clave: 'messi', color: '#F72585' },
@@ -28,7 +29,7 @@ const imagenDe = (atleta) => {
 };
 
 export default async function Deportes() {
-  const respuesta = await fetch('http://localhost:3000/atletas', { cache: 'no-store' });
+  const respuesta = await fetch(`${API_URL}/atletas`, { cache: 'no-store' });
   const atletas = await respuesta.json();
 
   return (

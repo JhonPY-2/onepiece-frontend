@@ -1,6 +1,8 @@
+import { API_URL } from '@/lib/api';
+
 async function obtenerEstadisticas() {
   try {
-    const respuesta = await fetch('http://localhost:3000/estadisticas/resumen', {
+    const respuesta = await fetch(`${API_URL}/estadisticas/resumen`, {
       cache: 'no-store'
     });
 

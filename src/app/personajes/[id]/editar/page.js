@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import useAuth from '@/hooks/useAuth';
 import SelectorImagen from '@/components/SelectorImagen';
+import { API_URL } from '@/lib/api';
 
 export default function EditarPersonaje({ params }) {
   const router = useRouter();
@@ -42,7 +43,7 @@ export default function EditarPersonaje({ params }) {
       const { id } = await params;
       setId(id);
 
-      const respuesta = await fetch(`http://localhost:3000/personajes/${id}`);
+      const respuesta = await fetch(`${API_URL}/personajes/${id}`);
       const datos = await respuesta.json();
 
       setFormulario({
@@ -82,7 +83,7 @@ export default function EditarPersonaje({ params }) {
         formData.append('imagen', archivo);
       }
 
-      const respuesta = await fetch(`http://localhost:3000/personajes/${id}`, {
+      const respuesta = await fetch(`${API_URL}/personajes/${id}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`

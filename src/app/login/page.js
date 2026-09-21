@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import { API_URL } from '@/lib/api';
 
 export default function Login() {
   const router = useRouter();
@@ -19,7 +20,7 @@ export default function Login() {
     setError(null);
 
     try {
-      const respuesta = await fetch('http://localhost:3000/auth/login', {
+      const respuesta = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

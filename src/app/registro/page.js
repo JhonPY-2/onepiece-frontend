@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import { API_URL } from '@/lib/api';
 
 export default function Registro() {
   const router = useRouter();
@@ -27,7 +28,7 @@ export default function Registro() {
     setEnviando(true);
 
     try {
-      const respuesta = await fetch('http://localhost:3000/auth/registro', {
+      const respuesta = await fetch(`${API_URL}/auth/registro`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

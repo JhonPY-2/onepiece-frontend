@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import BotonesAccionDeporte from './BotonesAccion';
+import { API_URL } from '@/lib/api';
 
 const colores = [
   { clave: 'messi', color: '#F72585' },
@@ -29,7 +30,7 @@ const imagenDe = (atleta) => {
 export default async function PaginaDeporte({ params }) {
   const { id } = await params;
 
-  const respuesta = await fetch(`http://localhost:3000/atletas/${id}`, {
+  const respuesta = await fetch(`${API_URL}/atletas/${id}`, {
     cache: 'no-store'
   });
 

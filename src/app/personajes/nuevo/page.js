@@ -5,6 +5,7 @@ import {useState, useEffect} from "react";
 import {useRouter} from "next/navigation";
 import useAuth from "@/hooks/useAuth";
 import SelectorImagen from '@/components/SelectorImagen';
+import { API_URL } from '@/lib/api';
 
 
 
@@ -71,7 +72,7 @@ export default function NuevoPersonaje() {
         formData.append('imagen', archivo);
       }
 
-      const respuesta = await fetch('http://localhost:3000/personajes', {
+      const respuesta = await fetch(`${API_URL}/personajes`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import useAuth from '@/hooks/useAuth';
 import SelectorImagen from '@/components/SelectorImagen';
+import { API_URL } from '@/lib/api';
 
 const poolHabilidades = ['Velocidad', 'Fuerza', 'Defensa', 'Agilidad', 'Técnica', 'Resistencia', 'Potencia'];
 
@@ -62,7 +63,7 @@ export default function EditarDeporte() {
   useEffect(() => {
     async function cargarAtleta() {
       try {
-        const respuesta = await fetch(`http://localhost:3000/atletas/${id}`);
+        const respuesta = await fetch(`${API_URL}/atletas/${id}`);
         if (!respuesta.ok) {
           throw new Error('No se pudo cargar el atleta');
         }
@@ -103,7 +104,7 @@ export default function EditarDeporte() {
         formData.append('imagen', archivo);
       }
 
-      const respuesta = await fetch(`http://localhost:3000/atletas/${id}`, {
+      const respuesta = await fetch(`${API_URL}/atletas/${id}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`
