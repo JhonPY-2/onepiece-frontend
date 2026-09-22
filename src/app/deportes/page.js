@@ -20,7 +20,7 @@ const colorPorNombre = (nombre) => {
 
 const imagenDe = (atleta) => {
   if (atleta?.imagen && String(atleta.imagen).startsWith('http')) {
-    return atleta.imagen;
+    return atleta.imagen.replace('/upload/', '/upload/f_auto,q_auto,w_400/');
   }
   if (atleta?.imagen) {
     return `/${atleta.imagen}`;

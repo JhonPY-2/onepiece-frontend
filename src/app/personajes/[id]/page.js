@@ -34,7 +34,7 @@ const imagenPorNombre = (nombre) => {
 
 const imagenDe = (personaje) => {
   if (personaje?.imagen && String(personaje.imagen).startsWith('http')) {
-    return personaje.imagen;
+    return personaje.imagen.replace('/upload/', '/upload/f_auto,q_auto,w_400/');
   }
   if (personaje?.imagen) {
     return `/${personaje.imagen}`;
