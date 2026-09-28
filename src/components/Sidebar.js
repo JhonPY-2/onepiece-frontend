@@ -31,6 +31,7 @@ export default function Sidebar() {
   const { token, estaAutenticado, username } = useAuth();
   const personajesActivo = (pathname === '/' || pathname?.startsWith('/personajes')) ?? false;
   const deportesActivo = pathname?.startsWith('/deportes') ?? false;
+  const tripulacionesActivo = pathname?.startsWith('/tripulaciones') ?? false;
   const estadisticasActivo = pathname?.startsWith('/estadisticas') ?? false;
   const nombreMostrado = username || 'Usuario';
   const inicial = nombreMostrado.charAt(0).toUpperCase();
@@ -67,6 +68,14 @@ export default function Sidebar() {
           }`}
         >
           ⚙️ Deportes
+        </Link>
+        <Link
+          href="/tripulaciones"
+          className={`text-white text-base px-4 py-3 rounded-lg flex items-center gap-2 transition-colors ${
+            tripulacionesActivo ? 'bg-gold/15' : 'bg-transparent'
+          }`}
+        >
+          ⚓ Tripulaciones
         </Link>
         <Link
           href="/estadisticas"

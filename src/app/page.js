@@ -103,7 +103,7 @@ export default async function Home() {
               </div>
               <div className="p-4">
                 <p className="font-bold text-ink">{personaje.nombre}</p>
-                <p className="text-sm text-secondary">{personaje.tripulacion}</p>
+                <p className="text-sm text-secondary">{personaje.tripulacion?.nombre}</p>
               </div>
             </Link>
           </li>

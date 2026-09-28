@@ -77,7 +77,7 @@ export default async function PaginaPersonaje({ params }) {
             {personaje.nombre}
           </h1>
           <span className="inline-block bg-gold/15 text-gold rounded-full px-3 py-1 mb-6">
-            {personaje.tripulacion}
+            {personaje.tripulacion?.nombre}
           </span>
 
           <p className="text-gray-200 mb-4 text-lg">

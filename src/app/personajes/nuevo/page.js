@@ -14,12 +14,27 @@ export default function NuevoPersonaje() {
 
         const router = useRouter();
         const { token, estaAutenticado } = useAuth();
+        const [tripulaciones, setTripulaciones] = useState([]);
 
         useEffect(() => {
             if (!estaAutenticado) {
                 router.replace('/acceso-denegado');
             }
         }, [estaAutenticado, router]);
+
+        useEffect(() => {
+            async function cargarTripulaciones() {
+                try {
+                    const respuesta = await fetch(`${API_URL}/tripulaciones`);
+                    if (respuesta.ok) {
+                        setTripulaciones(await respuesta.json());
+                    }
+                } catch {
+                    setTripulaciones([]);
+                }
+            }
+            cargarTripulaciones();
+        }, []);
 
 
         const [formulario, setFormulario] = useState ({
@@ -121,15 +136,22 @@ export default function NuevoPersonaje() {
 
           <div>
             <label className="block text-gray-300 mb-1">Tripulación</label>
-            <input
-              type="text"
+            <select
               name="tripulacion"
               value={formulario.tripulacion}
               onChange={manejarCambio}
               required
-              placeholder="Ej. Sombrero de Paja"
-              className="bg-white rounded-lg p-2.5 w-full text-ink placeholder-gray-400 outline-none focus:ring-2 focus:ring-gold"
-            />
+              className="bg-white rounded-lg p-2.5 w-full text-ink outline-none focus:ring-2 focus:ring-gold"
+            >
+              <option value="" disabled>
+                Selecciona una tripulación
+              </option>
+              {tripulaciones.map((t) => (
+                <option key={t._id} value={t._id}>
+                  {t.nombre}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div>

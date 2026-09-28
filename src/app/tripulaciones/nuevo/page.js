@@ -6,32 +6,9 @@ import useAuth from '@/hooks/useAuth';
 import SelectorImagen from '@/components/SelectorImagen';
 import { API_URL } from '@/lib/api';
 
-export default function EditarPersonaje({ params }) {
+export default function NuevaTripulacion() {
   const router = useRouter();
   const { token, estaAutenticado } = useAuth();
-  const [id, setId] = useState(null);
-
-  const [formulario, setFormulario] = useState({
-    nombre: '',
-    tripulacion: '',
-    recompensa: ''
-  });
-
-  const [cargando, setCargando] = useState(true);
-  const [error, setError] = useState(null);
-  const [enviando, setEnviando] = useState(false);
-  const [archivo, setArchivo] = useState(null);
-  const [imagenPreview, setImagenPreview] = useState(null);
-  const [tripulaciones, setTripulaciones] = useState([]);
-
-  function manejarArchivo(seleccionado) {
-    setArchivo(seleccionado);
-    if (seleccionado) {
-      setImagenPreview(URL.createObjectURL(seleccionado));
-    } else {
-      setImagenPreview(null);
-    }
-  }
 
   useEffect(() => {
     if (!estaAutenticado) {
@@ -39,43 +16,37 @@ export default function EditarPersonaje({ params }) {
     }
   }, [estaAutenticado, router]);
 
-  useEffect(() => {
-    async function cargarTripulaciones() {
-      try {
-        const respuesta = await fetch(`${API_URL}/tripulaciones`);
-        if (respuesta.ok) {
-          setTripulaciones(await respuesta.json());
-        }
-      } catch {
-        setTripulaciones([]);
-      }
+  const [formulario, setFormulario] = useState({
+    nombre: '',
+    capitan: '',
+    descripcion: '',
+    numeroMiembros: ''
+  });
+
+  const [error, setError] = useState(null);
+  const [enviando, setEnviando] = useState(false);
+  const [archivoImagen, setArchivoImagen] = useState(null);
+  const [imagenPreview, setImagenPreview] = useState(null);
+  const [archivoFotoCapitan, setArchivoFotoCapitan] = useState(null);
+  const [fotoCapitanPreview, setFotoCapitanPreview] = useState(null);
+
+  function manejarArchivoImagen(seleccionado) {
+    setArchivoImagen(seleccionado);
+    if (seleccionado) {
+      setImagenPreview(URL.createObjectURL(seleccionado));
+    } else {
+      setImagenPreview(null);
     }
-    cargarTripulaciones();
-  }, []);
+  }
 
-  useEffect(() => {
-    async function cargarDatos() {
-      const { id } = await params;
-      setId(id);
-
-      const respuesta = await fetch(`${API_URL}/personajes/${id}`);
-      const datos = await respuesta.json();
-
-      setFormulario({
-        nombre: datos.nombre,
-        tripulacion: datos.tripulacion?._id ?? '',
-        recompensa: datos.recompensa
-      });
-
-      if (datos.imagen && String(datos.imagen).startsWith('http')) {
-        setImagenPreview(datos.imagen);
-      }
-
-      setCargando(false);
+  function manejarFotoCapitan(seleccionado) {
+    setArchivoFotoCapitan(seleccionado);
+    if (seleccionado) {
+      setFotoCapitanPreview(URL.createObjectURL(seleccionado));
+    } else {
+      setFotoCapitanPreview(null);
     }
-
-    cargarDatos();
-  }, [params]);
+  }
 
   function manejarCambio(evento) {
     setFormulario({
@@ -92,14 +63,18 @@ export default function EditarPersonaje({ params }) {
     try {
       const formData = new FormData();
       formData.append('nombre', formulario.nombre);
-      formData.append('tripulacion', formulario.tripulacion);
-      formData.append('recompensa', formulario.recompensa || '0');
-      if (archivo) {
-        formData.append('imagen', archivo);
+      formData.append('capitan', formulario.capitan);
+      formData.append('descripcion', formulario.descripcion);
+      formData.append('numeroMiembros', formulario.numeroMiembros);
+      if (archivoImagen) {
+        formData.append('imagen', archivoImagen);
+      }
+      if (archivoFotoCapitan) {
+        formData.append('fotoCapitan', archivoFotoCapitan);
       }
 
-      const respuesta = await fetch(`${API_URL}/personajes/${id}`, {
-        method: 'PUT',
+      const respuesta = await fetch(`${API_URL}/tripulaciones`, {
+        method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`
         },
@@ -111,10 +86,10 @@ export default function EditarPersonaje({ params }) {
           const datosError = await respuesta.json();
           throw new Error(datosError?.mensaje ?? 'La imagen no puede superar los 5MB');
         }
-        throw new Error('No se pudo actualizar el personaje');
+        throw new Error('No se pudo crear la tripulación');
       }
 
-      router.push(`/personajes/${id}`);
+      router.push('/tripulaciones');
       router.refresh();
     } catch (err) {
       setError(err.message);
@@ -123,17 +98,13 @@ export default function EditarPersonaje({ params }) {
     }
   }
 
-  if (cargando) {
-    return <main className="min-h-screen bg-navy p-8">Cargando...</main>;
-  }
-
   if (!estaAutenticado) {
     return <main className="min-h-screen bg-navy" />;
   }
 
   return (
     <main className="min-h-screen bg-navy p-8">
-      <h1 className="font-title text-3xl font-bold text-white mb-8">Editar Personaje</h1>
+      <h1 className="font-title text-3xl font-bold text-white mb-8">Nueva Tripulación</h1>
 
       <div className="flex flex-col md:flex-row items-start gap-8">
         <form onSubmit={manejarEnvio} className="space-y-4 w-full max-w-md">
@@ -144,38 +115,46 @@ export default function EditarPersonaje({ params }) {
               name="nombre"
               value={formulario.nombre}
               onChange={manejarCambio}
+              placeholder="Ej. Piratas del Sombrero de Paja"
               required
               className="bg-white rounded-lg p-2.5 w-full text-ink placeholder-gray-400 outline-none focus:ring-2 focus:ring-gold"
             />
           </div>
 
           <div>
-            <label className="block text-gray-300 mb-1">Tripulación</label>
-            <select
-              name="tripulacion"
-              value={formulario.tripulacion}
+            <label className="block text-gray-300 mb-1">Capitán</label>
+            <input
+              type="text"
+              name="capitan"
+              value={formulario.capitan}
               onChange={manejarCambio}
+              placeholder="Ej. Monkey D. Luffy"
               required
-              className="bg-white rounded-lg p-2.5 w-full text-ink outline-none focus:ring-2 focus:ring-gold"
-            >
-              <option value="" disabled>
-                Selecciona una tripulación
-              </option>
-              {tripulaciones.map((t) => (
-                <option key={t._id} value={t._id}>
-                  {t.nombre}
-                </option>
-              ))}
-            </select>
+              className="bg-white rounded-lg p-2.5 w-full text-ink placeholder-gray-400 outline-none focus:ring-2 focus:ring-gold"
+            />
           </div>
 
           <div>
-            <label className="block text-gray-300 mb-1">Recompensa</label>
+            <label className="block text-gray-300 mb-1">Descripción</label>
+            <input
+              type="text"
+              name="descripcion"
+              value={formulario.descripcion}
+              onChange={manejarCambio}
+              placeholder="Ej. Tripulación que sueña con el One Piece"
+              className="bg-white rounded-lg p-2.5 w-full text-ink placeholder-gray-400 outline-none focus:ring-2 focus:ring-gold"
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-300 mb-1">Número de miembros</label>
             <input
               type="number"
-              name="recompensa"
-              value={formulario.recompensa}
+              name="numeroMiembros"
+              value={formulario.numeroMiembros}
               onChange={manejarCambio}
+              placeholder="Ej. 10"
+              min="0"
               className="bg-white rounded-lg p-2.5 w-full text-ink placeholder-gray-400 outline-none focus:ring-2 focus:ring-gold"
             />
           </div>
@@ -200,7 +179,16 @@ export default function EditarPersonaje({ params }) {
           </div>
         </form>
 
-        <SelectorImagen preview={imagenPreview} onSeleccionar={manejarArchivo} />
+        <div className="flex flex-col gap-8">
+          <div>
+            <p className="text-gray-300 mb-2">Bandera / Emblema</p>
+            <SelectorImagen preview={imagenPreview} onSeleccionar={manejarArchivoImagen} />
+          </div>
+          <div>
+            <p className="text-gray-300 mb-2">Foto del capitán</p>
+            <SelectorImagen preview={fotoCapitanPreview} onSeleccionar={manejarFotoCapitan} />
+          </div>
+        </div>
       </div>
     </main>
   );
