@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import BotonesAccionTripulacion from './BotonesAccion';
+import BotonAgregar from '@/components/BotonAgregar';
 import { API_URL } from '@/lib/api';
 
 const imagenDe = (tripulacion) => {
@@ -107,25 +108,34 @@ export default async function PaginaTripulacion({ params }) {
 
       {miembros.length > 0 && (
         <section className="mt-12">
-          <h2 className="font-title text-2xl font-bold text-white mb-6">Miembros</h2>
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+            <h2 className="font-title text-2xl font-bold text-white">Miembros</h2>
+            <BotonAgregar href={`/tripulantes/nuevo?tripulacion=${id}`}>
+              Agregar tripulante
+            </BotonAgregar>
+          </div>
           <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            {miembros.map((personaje) => (
-              <li key={personaje._id}>
+            {miembros.map((miembro) => (
+              <li key={miembro._id}>
                 <Link
-                  href={`/personajes/${personaje._id}`}
+                  href={
+                    miembro.tipo === 'tripulante'
+                      ? `/tripulantes/${miembro._id}`
+                      : `/personajes/${miembro._id}`
+                  }
                   className="block bg-white rounded-xl overflow-hidden hover:-translate-y-1 transition-transform"
                   style={{ boxShadow: '0 8px 24px rgba(212, 160, 52, 0.35)' }}
                 >
                   <div className="h-40 bg-white relative">
                     <Image
-                      src={imagenDePersonaje(personaje)}
-                      alt={personaje.nombre}
+                      src={imagenDePersonaje(miembro)}
+                      alt={miembro.nombre}
                       fill
                       className="object-contain"
                     />
                   </div>
                   <div className="p-3">
-                    <p className="font-bold text-ink text-center truncate">{personaje.nombre}</p>
+                    <p className="font-bold text-ink text-center truncate">{miembro.nombre}</p>
                   </div>
                 </Link>
               </li>

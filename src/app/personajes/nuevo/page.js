@@ -5,6 +5,7 @@ import {useState, useEffect} from "react";
 import {useRouter} from "next/navigation";
 import useAuth from "@/hooks/useAuth";
 import SelectorImagen from '@/components/SelectorImagen';
+import InputEtiquetas from '@/components/InputEtiquetas';
 import { API_URL } from '@/lib/api';
 
 
@@ -41,8 +42,14 @@ export default function NuevoPersonaje() {
 
             nombre: '',
             tripulacion: '',
-            recompensa: ''
+            recompensa: '',
+            frutaNombre: '',
+            frutaTipo: '',
+            frutaDespertada: false
         })
+
+        const [habilidades, setHabilidades] = useState([]);
+        const [arcos, setArcos] = useState([]);
 
 
        const [error, setError] = useState(null);
@@ -61,10 +68,12 @@ export default function NuevoPersonaje() {
        
        function manejarCambio(evento) {
 
+        const { name, type, value, checked } = evento.target;
+
         setFormulario({
 
             ...formulario,
-            [evento.target.name]: evento.target.value 
+            [name]: type === 'checkbox' ? checked : value
 
         });
        }
@@ -83,6 +92,16 @@ export default function NuevoPersonaje() {
       formData.append('nombre', formulario.nombre);
       formData.append('tripulacion', formulario.tripulacion);
       formData.append('recompensa', formulario.recompensa || '0');
+      formData.append(
+        'frutaDiablo',
+        JSON.stringify({
+          nombre: formulario.frutaNombre,
+          tipo: formulario.frutaTipo,
+          despertada: formulario.frutaDespertada
+        })
+      );
+      formData.append('habilidades', JSON.stringify(habilidades));
+      formData.append('arcos', JSON.stringify(arcos));
       if (archivo) {
         formData.append('imagen', archivo);
       }
@@ -165,6 +184,55 @@ export default function NuevoPersonaje() {
               className="bg-white rounded-lg p-2.5 w-full text-ink placeholder-gray-400 outline-none focus:ring-2 focus:ring-gold"
             />
           </div>
+
+          <div>
+            <label className="block text-gray-300 mb-1">Fruta del Diablo</label>
+            <input
+              type="text"
+              name="frutaNombre"
+              value={formulario.frutaNombre}
+              onChange={manejarCambio}
+              placeholder="Nombre de la fruta"
+              className="bg-white rounded-lg p-2.5 w-full text-ink placeholder-gray-400 outline-none focus:ring-2 focus:ring-gold mb-2"
+            />
+            <select
+              name="frutaTipo"
+              value={formulario.frutaTipo}
+              onChange={manejarCambio}
+              className="bg-white rounded-lg p-2.5 w-full text-ink outline-none focus:ring-2 focus:ring-gold mb-2"
+            >
+              <option value="">Sin tipo</option>
+              <option value="Paramecia">Paramecia</option>
+              <option value="Zoan">Zoan</option>
+              <option value="Logia">Logia</option>
+              <option value="Zoan Ancestral">Zoan Ancestral</option>
+              <option value="Zoan Mítica">Zoan Mítica</option>
+            </select>
+            <label className="flex items-center gap-2 text-gray-300 cursor-pointer">
+              <input
+                type="checkbox"
+                name="frutaDespertada"
+                checked={formulario.frutaDespertada}
+                onChange={manejarCambio}
+                className="w-4 h-4 accent-gold"
+              />
+              Despertada
+            </label>
+          </div>
+
+          <InputEtiquetas
+            etiqueta="Habilidades"
+            valores={habilidades}
+            onChange={setHabilidades}
+            placeholder="Ej. Gear 5"
+          />
+
+          <InputEtiquetas
+            etiqueta="Arcos"
+            valores={arcos}
+            onChange={setArcos}
+            placeholder="Ej. Wano"
+          />
 
           {error && <p className="text-red-400">{error}</p>}
 

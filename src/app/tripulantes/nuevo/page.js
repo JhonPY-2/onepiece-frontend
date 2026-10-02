@@ -1,20 +1,20 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import useAuth from '@/hooks/useAuth';
 import SelectorImagen from '@/components/SelectorImagen';
 import InputEtiquetas from '@/components/InputEtiquetas';
 import { API_URL } from '@/lib/api';
 
-export default function EditarPersonaje({ params }) {
+function FormularioNuevoTripulante() {
   const router = useRouter();
   const { token, estaAutenticado } = useAuth();
-  const [id, setId] = useState(null);
+  const searchParams = useSearchParams();
+  const tripulacionId = searchParams.get('tripulacion') ?? '';
 
   const [formulario, setFormulario] = useState({
     nombre: '',
-    tripulacion: '',
     recompensa: '',
     frutaNombre: '',
     frutaTipo: '',
@@ -24,12 +24,22 @@ export default function EditarPersonaje({ params }) {
   const [habilidades, setHabilidades] = useState([]);
   const [arcos, setArcos] = useState([]);
 
-  const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
   const [enviando, setEnviando] = useState(false);
   const [archivo, setArchivo] = useState(null);
   const [imagenPreview, setImagenPreview] = useState(null);
-  const [tripulaciones, setTripulaciones] = useState([]);
+
+  useEffect(() => {
+    if (!estaAutenticado) {
+      router.replace('/acceso-denegado');
+    }
+  }, [estaAutenticado, router]);
+
+  useEffect(() => {
+    if (!tripulacionId) {
+      router.replace('/tripulaciones');
+    }
+  }, [tripulacionId, router]);
 
   function manejarArchivo(seleccionado) {
     setArchivo(seleccionado);
@@ -39,56 +49,6 @@ export default function EditarPersonaje({ params }) {
       setImagenPreview(null);
     }
   }
-
-  useEffect(() => {
-    if (!estaAutenticado) {
-      router.replace('/acceso-denegado');
-    }
-  }, [estaAutenticado, router]);
-
-  useEffect(() => {
-    async function cargarTripulaciones() {
-      try {
-        const respuesta = await fetch(`${API_URL}/tripulaciones`);
-        if (respuesta.ok) {
-          setTripulaciones(await respuesta.json());
-        }
-      } catch {
-        setTripulaciones([]);
-      }
-    }
-    cargarTripulaciones();
-  }, []);
-
-  useEffect(() => {
-    async function cargarDatos() {
-      const { id } = await params;
-      setId(id);
-
-      const respuesta = await fetch(`${API_URL}/personajes/${id}`);
-      const datos = await respuesta.json();
-
-      setFormulario({
-        nombre: datos.nombre,
-        tripulacion: datos.tripulacion?._id ?? '',
-        recompensa: datos.recompensa,
-        frutaNombre: datos.frutaDiablo?.nombre ?? '',
-        frutaTipo: datos.frutaDiablo?.tipo ?? '',
-        frutaDespertada: datos.frutaDiablo?.despertada ?? false
-      });
-
-      setHabilidades(datos.habilidades ?? []);
-      setArcos(datos.arcos ?? []);
-
-      if (datos.imagen && String(datos.imagen).startsWith('http')) {
-        setImagenPreview(datos.imagen);
-      }
-
-      setCargando(false);
-    }
-
-    cargarDatos();
-  }, [params]);
 
   function manejarCambio(evento) {
     const { name, type, value, checked } = evento.target;
@@ -100,13 +60,19 @@ export default function EditarPersonaje({ params }) {
 
   async function manejarEnvio(evento) {
     evento.preventDefault();
+
+    if (!tripulacionId) {
+      router.replace('/tripulaciones');
+      return;
+    }
+
     setEnviando(true);
     setError(null);
 
     try {
       const formData = new FormData();
       formData.append('nombre', formulario.nombre);
-      formData.append('tripulacion', formulario.tripulacion);
+      formData.append('tripulacion', tripulacionId);
       formData.append('recompensa', formulario.recompensa || '0');
       formData.append(
         'frutaDiablo',
@@ -122,8 +88,8 @@ export default function EditarPersonaje({ params }) {
         formData.append('imagen', archivo);
       }
 
-      const respuesta = await fetch(`${API_URL}/personajes/${id}`, {
-        method: 'PUT',
+      const respuesta = await fetch(`${API_URL}/tripulantes`, {
+        method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`
         },
@@ -135,20 +101,15 @@ export default function EditarPersonaje({ params }) {
           const datosError = await respuesta.json();
           throw new Error(datosError?.mensaje ?? 'La imagen no puede superar los 5MB');
         }
-        throw new Error('No se pudo actualizar el personaje');
+        throw new Error('No se pudo crear el tripulante');
       }
 
-      router.push(`/personajes/${id}`);
-      router.refresh();
+      router.push(`/tripulaciones/${tripulacionId}`);
     } catch (err) {
       setError(err.message);
     } finally {
       setEnviando(false);
     }
-  }
-
-  if (cargando) {
-    return <main className="min-h-screen bg-navy p-8">Cargando...</main>;
   }
 
   if (!estaAutenticado) {
@@ -157,7 +118,7 @@ export default function EditarPersonaje({ params }) {
 
   return (
     <main className="min-h-screen bg-navy p-8">
-      <h1 className="font-title text-3xl font-bold text-white mb-8">Editar Personaje</h1>
+      <h1 className="font-title text-3xl font-bold text-white mb-8">Nuevo Tripulante</h1>
 
       <div className="flex flex-col md:flex-row items-start gap-8">
         <form onSubmit={manejarEnvio} className="space-y-4 w-full max-w-md">
@@ -169,28 +130,9 @@ export default function EditarPersonaje({ params }) {
               value={formulario.nombre}
               onChange={manejarCambio}
               required
+              placeholder="Ej. Vivi"
               className="bg-white rounded-lg p-2.5 w-full text-ink placeholder-gray-400 outline-none focus:ring-2 focus:ring-gold"
             />
-          </div>
-
-          <div>
-            <label className="block text-gray-300 mb-1">Tripulación</label>
-            <select
-              name="tripulacion"
-              value={formulario.tripulacion}
-              onChange={manejarCambio}
-              required
-              className="bg-white rounded-lg p-2.5 w-full text-ink outline-none focus:ring-2 focus:ring-gold"
-            >
-              <option value="" disabled>
-                Selecciona una tripulación
-              </option>
-              {tripulaciones.map((t) => (
-                <option key={t._id} value={t._id}>
-                  {t.nombre}
-                </option>
-              ))}
-            </select>
           </div>
 
           <div>
@@ -200,6 +142,7 @@ export default function EditarPersonaje({ params }) {
               name="recompensa"
               value={formulario.recompensa}
               onChange={manejarCambio}
+              placeholder="Ej. 80000000"
               className="bg-white rounded-lg p-2.5 w-full text-ink placeholder-gray-400 outline-none focus:ring-2 focus:ring-gold"
             />
           </div>
@@ -276,5 +219,13 @@ export default function EditarPersonaje({ params }) {
         <SelectorImagen preview={imagenPreview} onSeleccionar={manejarArchivo} />
       </div>
     </main>
+  );
+}
+
+export default function NuevoTripulante() {
+  return (
+    <Suspense fallback={<main className="min-h-screen bg-navy" />}>
+      <FormularioNuevoTripulante />
+    </Suspense>
   );
 }

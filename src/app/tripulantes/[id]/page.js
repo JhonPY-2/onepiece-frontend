@@ -1,5 +1,6 @@
 import Image from 'next/image';
-import BotonesAccion from './BotonesAccion';
+import Link from 'next/link';
+import BotonesAccionTripulante from './BotonesAccion';
 import { API_URL } from '@/lib/api';
 
 const resplandores = [
@@ -16,8 +17,6 @@ const resplandorPorNombre = (nombre) => {
   return resplandores.find((r) => nombreMinuscula.includes(r.clave))?.color ?? '#D4A034';
 };
 
-// Mapeo nombre -> archivo de imagen en /public
-// Si el personaje no tiene imagen propia todavía, cae en el logo como placeholder
 const imagenes = [
   { clave: 'luffy', archivo: '/luffy.png' },
   { clave: 'zoro', archivo: '/zoro.png' },
@@ -32,39 +31,48 @@ const imagenPorNombre = (nombre) => {
   return imagenes.find((i) => nombreMinuscula.includes(i.clave))?.archivo ?? '/logo.png';
 };
 
-const imagenDe = (personaje) => {
-  if (personaje?.imagen && String(personaje.imagen).startsWith('http')) {
-    return personaje.imagen.replace('/upload/', '/upload/f_auto,q_auto,w_400/');
+const imagenDe = (tripulante) => {
+  if (tripulante?.imagen && String(tripulante.imagen).startsWith('http')) {
+    return tripulante.imagen.replace('/upload/', '/upload/f_auto,q_auto,w_400/');
   }
-  if (personaje?.imagen) {
-    return `/${personaje.imagen}`;
+  if (tripulante?.imagen) {
+    return `/${tripulante.imagen}`;
   }
-  return imagenPorNombre(personaje?.nombre);
+  return imagenPorNombre(tripulante?.nombre);
 };
 
-async function obtenerPersonaje(id) {
-  const respuesta = await fetch(`${API_URL}/personajes/${id}`, {
+async function obtenerTripulante(id) {
+  const respuesta = await fetch(`${API_URL}/tripulantes/${id}`, {
     cache: 'no-store'
   });
   const datos = await respuesta.json();
   return datos;
 }
 
-export default async function PaginaPersonaje({ params }) {
+export default async function PaginaTripulante({ params }) {
   const { id } = await params;
-  const personaje = await obtenerPersonaje(id);
+  const tripulante = await obtenerTripulante(id);
+
+  const idTripulacion = tripulante.tripulacion?._id ?? tripulante.tripulacion ?? '';
 
   return (
     <main className="min-h-screen bg-navy p-8">
+      <Link
+        href={`/tripulaciones/${idTripulacion}`}
+        className="inline-block text-secondary hover:text-gray-300 mb-6"
+      >
+        ← Volver a la tripulación
+      </Link>
+
       <div className="flex flex-col md:flex-row gap-8">
         <div className="shrink-0 w-full md:w-80">
           <div
             className="h-80 md:h-96 bg-surface-alt rounded-2xl overflow-hidden"
-            style={{ boxShadow: `0 8px 24px ${resplandorPorNombre(personaje.nombre)}` }}
+            style={{ boxShadow: `0 8px 24px ${resplandorPorNombre(tripulante.nombre)}` }}
           >
             <Image
-              src={imagenDe(personaje)}
-              alt={personaje.nombre}
+              src={imagenDe(tripulante)}
+              alt={tripulante.nombre}
               width={400}
               height={400}
               className="w-full h-full object-cover"
@@ -74,22 +82,22 @@ export default async function PaginaPersonaje({ params }) {
 
         <div className="flex flex-col">
           <h1 className="font-title text-4xl font-bold text-white mb-1">
-            {personaje.nombre}
+            {tripulante.nombre}
           </h1>
           <span className="inline-block bg-gold/15 text-gold rounded-full px-3 py-1 mb-6">
-            {personaje.tripulacion?.nombre}
+            {tripulante.tripulacion?.nombre}
           </span>
 
           <p className="text-gray-200 mb-4 text-lg">
             <span className="text-secondary">Recompensa:</span>{' '}
-            {personaje.recompensa.toLocaleString()} berries
+            {tripulante.recompensa.toLocaleString()} berries
           </p>
 
-          {personaje.frutaDiablo?.nombre && (
+          {tripulante.frutaDiablo?.nombre && (
             <div className="mb-4">
               <p className="text-secondary text-sm mb-1">Fruta del Diablo:</p>
               <p className="text-white">
-                {personaje.frutaDiablo.nombre} ({personaje.frutaDiablo.tipo})
+                {tripulante.frutaDiablo.nombre} ({tripulante.frutaDiablo.tipo})
               </p>
             </div>
           )}
@@ -97,24 +105,24 @@ export default async function PaginaPersonaje({ params }) {
           <div className="mb-6">
             <p className="text-secondary text-sm mb-1">Habilidades:</p>
             <ul className="list-disc list-inside text-gray-200 space-y-1">
-              {personaje.habilidades.map((habilidad) => (
+              {tripulante.habilidades.map((habilidad) => (
                 <li key={habilidad}>{habilidad}</li>
               ))}
             </ul>
           </div>
 
-          {personaje.arcos?.length > 0 && (
+          {tripulante.arcos?.length > 0 && (
             <div className="mb-6">
               <p className="text-secondary text-sm mb-1">Arcos:</p>
               <ul className="list-disc list-inside text-gray-200 space-y-1">
-                {personaje.arcos.map((arco) => (
+                {tripulante.arcos.map((arco) => (
                   <li key={arco}>{arco}</li>
                 ))}
               </ul>
             </div>
           )}
 
-          <BotonesAccion id={personaje._id} />
+          <BotonesAccionTripulante id={tripulante._id} idTripulacion={idTripulacion} />
         </div>
       </div>
     </main>
