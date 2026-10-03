@@ -3,16 +3,21 @@
 ## Estado actual
 - Frontend Next.js 16 (App Router) + React 19 + Tailwind v4.
 - Módulos: personajes, tripulaciones, tripulantes, deportes, estadisticas.
+- Buscador por nombre en la lista de personajes (homepage `/`): client-side en `ListaPersonajes.js`, que también contiene el encabezado (el buscador va en la fila del título, no sobre el grid).
 - No hay script de tests (solo lint y build).
 
 ## Decisiones (y por qué)
 - Tripulantes dependientes de una tripulación (sin lista global), para mantener el contexto acotado al crear/editar/ver.
 - En `tripulantes/nuevo`, `tripulacion` se envía fijo desde `?tripulacion=ID` (sin select).
+- La búsqueda de personajes filtra en el cliente (no hay endpoint de búsqueda y no se tocan contratos del backend). Solo compara `nombre`, ignorando mayúsculas y acentos.
 
 ## Aprendizajes y errores a evitar
 - `useSearchParams()` requiere `<Suspense>` (ej.: `tripulantes/nuevo`).
 - Backend responde `413` si la imagen supera 5MB (usar ese mensaje).
 - Preservar transformación de Cloudinary: `replace('/upload/', '/upload/f_auto,q_auto,w_400/')` al renderizar desde backend.
+- No pasar documentos de Mongoose a Client Components (`_id` es un `ObjectId`, `tripulacion` viene poblada): aplanar antes con un mapper.
+- `src/lib/personajes.js` centraliza `imagenDe`/`resplandorPorNombre`/`imagenPorNombre`; `personajes/[id]/page.js` y `tripulantes/[id]/page.js` aún tienen copias inline.
 
 ## Próximos pasos
-- (vacío por ahora)
+- Conectar el `input type="search"` decorativo de `deportes/page.js` (mismo patrón que personajes).
+- Opcional: que `[id]/page.js` importen de `src/lib/personajes.js` para eliminar los helpers duplicados.

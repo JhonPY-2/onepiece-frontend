@@ -34,6 +34,16 @@
 - Detalles server-side: usar `cache: 'no-store'` cuando se necesita frescura.
 - `useSearchParams()` requiere `<Suspense>` (seguir patrón existente).
 
+## Buscadores
+- La lista de personajes es el homepage `/` (`src/app/page.js`), no una ruta `/personajes`. `src/app/ListaPersonajes.js` es el Client Component que renderiza el encabezado (título, buscador y botón agregar, en la misma fila `flex justify-between`) y el grid. `page.js` solo hace el fetch y el `<main>`.
+- Patrón: fetch en el Server Component (`cache: 'no-store'`) + filtro client-side con `useState` + `useMemo`. El backend no expone búsqueda, no filtrar por query param.
+- Normalizar siempre antes de comparar: `toLowerCase()` + `NFD` quitando diacríticos (`/[\u0300-\u036f]/g`). Query vacía o con solo espacios → lista completa.
+- Comparar solo `nombre` (con `?? ''` para que un registro sin nombre no matchee cualquier texto).
+- Estado vacío obligatorio en español ("No se encontraron personajes" + botón "Limpiar búsqueda"); el `<ul>` vacío a secas no vale.
+- Antes de pasar datos a un Client Component, aplanar los documentos de Mongoose a objetos planos: `_id` es un `ObjectId` y `tripulacion` viene poblada. Helper `aObjetoPlano` en `src/app/page.js`.
+- Helpers de imagen/color de personajes en `src/lib/personajes.js` (`imagenDe`, `resplandorPorNombre`, `imagenPorNombre`).
+- Pendiente: `deportes/page.js` tiene un `input type="search"` decorativo sin filtrar.
+
 ## Tripulantes
 - `tripulantes/nuevo`: usa `useSearchParams()` en `<Suspense>`, lee `?tripulacion=ID`, redirige a `/tripulaciones` si falta. Sin select de tripulación (envía `tripulacion` fijo).
 - `tripulantes/[id]`: botón volver → `/tripulaciones/:id` de la tripulación (viene del backend). Incluye sección Arcos.
