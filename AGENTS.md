@@ -44,6 +44,13 @@
 - Helpers de imagen/color de personajes en `src/lib/personajes.js` (`imagenDe`, `resplandorPorNombre`, `imagenPorNombre`).
 - Pendiente: `deportes/page.js` tiene un `input type="search"` decorativo sin filtrar.
 
+## Responsive
+- Breakpoint principal: `md` (768 px). Por debajo: sidebar `w-60` colapsa a drawer fijo (`fixed inset-y-0 left-0 z-50 w-64 -translate-x-full`) con botón hamburguesa `fixed top-4 left-4 z-[60] md:hidden` en `AppShell`. Overlay `bg-black/50 md:hidden` bloquea fondo. El drawer se cierra al cambiar de ruta.
+- En `md` y arriba: sidebar `w-60 sticky top-0` visible siempre, sin hamburguesa.
+- Encabezados de listas: `flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4`; título `text-2xl sm:text-3xl break-words sm:whitespace-nowrap`; buscador `w-full sm:w-64`.
+- `<main>` con `p-4 sm:p-8` (en `AppShell` wrapper `pt-16 md:pt-0` reserva espacio para el botón hamburguesa en móvil).
+- Nada de `whitespace-nowrap` en títulos a móvil; medir `scrollWidth === innerWidth` al verificar.
+
 ## Tripulantes
 - `tripulantes/nuevo`: usa `useSearchParams()` en `<Suspense>`, lee `?tripulacion=ID`, redirige a `/tripulaciones` si falta. Sin select de tripulación (envía `tripulacion` fijo).
 - `tripulantes/[id]`: botón volver → `/tripulaciones/:id` de la tripulación (viene del backend). Incluye sección Arcos.

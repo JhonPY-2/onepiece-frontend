@@ -20,11 +20,11 @@ export default async function Tripulaciones() {
   const tripulaciones = await respuesta.json();
 
   return (
-    <main className="min-h-screen bg-navy p-8">
-      <div className="flex items-center justify-between gap-6 mb-10">
+    <main className="min-h-screen bg-navy p-4 sm:p-8">
+      <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3 min-w-0">
           <span className="text-3xl">🏴‍☠️</span>
-          <h1 className="font-title text-3xl font-bold text-white whitespace-nowrap">
+          <h1 className="font-title text-2xl sm:text-3xl font-bold text-white break-words sm:whitespace-nowrap">
             Tripulaciones
           </h1>
         </div>

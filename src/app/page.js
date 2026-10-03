@@ -22,7 +22,7 @@ export default async function Home() {
   const personajes = await obtenerPersonajes();
 
   return (
-    <main className="min-h-screen bg-navy p-8">
+    <main className="min-h-screen bg-navy p-4 sm:p-8">
       <ListaPersonajes personajes={personajes.map(aObjetoPlano)} />
     </main>
   );

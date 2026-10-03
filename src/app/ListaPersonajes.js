@@ -23,36 +23,38 @@ export default function ListaPersonajes({ personajes }) {
 
   return (
     <>
-      <div className="flex items-center justify-between gap-6 mb-10">
+      <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3 min-w-0">
           <span className="text-3xl">🏴‍☠️</span>
-          <h1 className="font-title text-3xl font-bold text-white whitespace-nowrap">
+          <h1 className="font-title text-2xl sm:text-3xl font-bold text-white break-words sm:whitespace-nowrap">
             Personajes de One Piece
           </h1>
         </div>
 
-        <div className="relative">
-          <svg
-            className="w-5 h-5 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-          >
-            <circle cx="11" cy="11" r="7" />
-            <path d="m21 21-4.3-4.3" strokeLinecap="round" />
-          </svg>
-          <input
-            type="search"
-            value={busqueda}
-            onChange={(e) => setBusqueda(e.target.value)}
-            placeholder="Buscar personaje..."
-            aria-label="Buscar personaje por nombre"
-            className="bg-white/10 rounded-full pl-10 pr-4 py-2 text-white placeholder-gray-400 outline-none focus:bg-white/15 w-64"
-          />
-        </div>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
+          <div className="relative w-full sm:w-64">
+            <svg
+              className="w-5 h-5 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="m21 21-4.3-4.3" strokeLinecap="round" />
+            </svg>
+            <input
+              type="search"
+              value={busqueda}
+              onChange={(e) => setBusqueda(e.target.value)}
+              placeholder="Buscar personaje..."
+              aria-label="Buscar personaje por nombre"
+              className="bg-white/10 rounded-full pl-10 pr-4 py-2 text-white placeholder-gray-400 outline-none focus:bg-white/15 w-full"
+            />
+          </div>
 
-        <BotonAgregar href="/personajes/nuevo">Agregar personaje</BotonAgregar>
+          <BotonAgregar href="/personajes/nuevo">Agregar personaje</BotonAgregar>
+        </div>
       </div>
 
       {filtrados.length === 0 ? (

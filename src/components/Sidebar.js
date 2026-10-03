@@ -25,7 +25,7 @@ function obtenerSaludo() {
   }
 }
 
-export default function Sidebar() {
+export default function Sidebar({ abierto }) {
   const pathname = usePathname();
   const router = useRouter();
   const { token, estaAutenticado, username } = useAuth();
@@ -44,7 +44,11 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="w-60 h-screen bg-[#081428] shrink-0 sticky top-0 flex flex-col">
+    <aside
+      className={`fixed md:sticky top-0 left-0 z-50 w-64 md:w-60 h-dvh md:h-screen shrink-0 overflow-y-auto bg-[#081428] flex flex-col transition-transform duration-200 ${
+        abierto ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+      }`}
+    >
       <Image
         src="/logo.png"
         alt="Logo One Piece"
