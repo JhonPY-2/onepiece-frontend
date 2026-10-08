@@ -68,8 +68,9 @@
 - No tocar `.env`.
 - No instalar dependencias sin preguntar.
 - No hacer commit ni push.
+- Leer `docs/constitution.md` y la spec activa (`specs/NNN-*/`) antes de tocar código.
 - Preservar textos en español y estilos existentes al editar formularios.
 - Siempre: actualizar `MEMORY.md` al terminar cada tarea.
 
 ## Verificación
-- Al terminar cada tarea: `npm run lint` y `npm run build` (no hay script de tests).
+- El agente **NO** ejecuta tests, lint ni build, ni arranca servidores: yo los corro desde PowerShell y el agente me da el comando exacto. La interfaz la verifica el agente con el MCP de Chrome DevTools en **modo solo lectura** (navegar, filtrar, buscar; nunca crear, editar ni borrar datos).
