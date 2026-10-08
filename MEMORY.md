@@ -6,6 +6,7 @@
 - Buscador por nombre en la lista de personajes (homepage `/`): client-side en `ListaPersonajes.js`, que también contiene el encabezado (el buscador va en la fila del título, no sobre el grid).
 - Layout responsive: sidebar `w-60` solo en `md+`; en móvil drawer + hamburguesa en `AppShell`; headers `flex-col sm:flex-row`; main `p-4 sm:p-8` con `pt-16 md:pt-0` en wrapper.
 - No hay script de tests (solo lint y build).
+- `docs/constitution.md` (nuevo): 6 principios innegociables aprobados por el usuario; leer antes de tocar código.
 
 ## Decisiones (y por qué)
 - Tripulantes dependientes de una tripulación (sin lista global), para mantener el contexto acotado al crear/editar/ver.
