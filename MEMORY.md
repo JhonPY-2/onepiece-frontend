@@ -7,6 +7,7 @@
 - Layout responsive: sidebar `w-60` solo en `md+`; en móvil drawer + hamburguesa en `AppShell`; headers `flex-col sm:flex-row`; main `p-4 sm:p-8` con `pt-16 md:pt-0` en wrapper.
 - No hay script de tests (solo lint y build).
 - `docs/constitution.md` (nuevo): 6 principios innegociables aprobados por el usuario; leer antes de tocar código.
+- Spec `specs/001-ranking-personajes/spec.md` (borrador): ranking top 10 vía `GET /personajes/ranking`; en orden del backend, sin reordenar en cliente.
 
 ## Decisiones (y por qué)
 - Tripulantes dependientes de una tripulación (sin lista global), para mantener el contexto acotado al crear/editar/ver.
