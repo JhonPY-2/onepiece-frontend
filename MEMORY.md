@@ -29,4 +29,4 @@
 ## Próximos pasos
 - Conectar el `input type="search"` decorativo de `deportes/page.js` (mismo patrón que personajes).
 - Opcional: que `[id]/page.js` importen de `src/lib/personajes.js` para eliminar los helpers duplicados.
-- Drawer del sidebar: el cierre solo por cambio de ruta deja overlay sin click-to-close y sin Escape (pendiente si se pide).
+- Drawer del sidebar: el cierre solo por cambio de ruta deja overlay sin click-to-close y sin Escape (pendiente si se pide).2026-10-08 23:05 - Spec 001: tasks.md actualizado (separa ListaRanking con tests TL, renumera, quita verificación DevTools de lista vacía)
