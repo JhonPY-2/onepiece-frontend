@@ -4,7 +4,7 @@
 
 ## Tareas
 
-- [ ] **T1. Instalar Vitest + Testing Library (configuración base).** (Sin RF directo)
+- [x] **T1. Instalar Vitest + Testing Library (configuración base).** (Sin RF directo)
   - Tests: Ninguno (tarea de setup). Verificar que `vitest.config.*` y `vitest.setup.*` configuren `jsdom`, alias `@/*` → `src/*`, `setupFiles` con `@testing-library/jest-dom` y procesado de JSX para archivos `.js` (`@vitejs/plugin-react`).
   - Código: Antes de instalar, **solicitar al usuario que compruebe el espacio libre en C:** (el usuario lo revisa). Instalar dependencias de desarrollo: `vitest`, `jsdom`, `@testing-library/react`, `@testing-library/user-event`, `@testing-library/jest-dom`, `@vitejs/plugin-react`. Crear `vitest.config.mjs` (o ajustar existente) con entorno `jsdom`, `setupFiles`, alias `@/*` → `src/*` y plugin de React para soportar JSX en `.js`. Añadir script `test`/`test:run` si no existe, sin romper `npm run lint` ni `npm run build`. **Esperar aprobación explícita del usuario** para proceder con la instalación.
   - Hecho cuando: `npx vitest --version` devuelve versión; la configuración carga sin error; espacio libre en C: verificado por el usuario; instalación realizada solo con aprobación explícita (cumple AGENTS.md). Verificable con lectura de archivos creados.
