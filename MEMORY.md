@@ -27,7 +27,8 @@
 - Verificar responsive midiendo `documentElement.scrollWidth === innerWidth` a 375px; nada de `whitespace-nowrap` en títulos móviles.
 
 ## Próximos pasos
-- Spec 001 T1 completada: `vitest.config.mjs` (jsdom, alias `@`→`src`, plugin React, `setupFiles`) y `vitest.setup.js` (`@testing-library/jest-dom/vitest`); scripts `test`/`test:run` en `package.json`. DevDeps instaladas por el usuario en Windows; `npx vitest --version` → `vitest/5.0.3`.
+- Spec 001 T1 completada: `vitest.config.mjs` (jsdom, alias `@`→`src`, plugin React, `setupFiles`) y `vitest.setup.js` (`@testing-library/jest-dom/vitest`); scripts `test`/`test:run` en `package.json`. DevDeps instaladas por el usuario en Windows; `npx vitest --version` → `vitest/5.0.3`. Añadido `test.pool = 'threads'`: en Windows el pool por defecto (forks) no arranca ("Timeout waiting for worker to respond").
+- Spec 001 T2 completada: `src/lib/ranking.js` con `formatearRecompensa`, `formatearTripulacion` y `esListaRankingValida` (TDD; `src/lib/ranking.test.js` con 11 casos en verde). Pendiente `aListaRanking` y `obtenerRanking` (T3).
 - Conectar el `input type="search"` decorativo de `deportes/page.js` (mismo patrón que personajes).
 - Opcional: que `[id]/page.js` importen de `src/lib/personajes.js` para eliminar los helpers duplicados.
 - Drawer del sidebar: el cierre solo por cambio de ruta deja overlay sin click-to-close y sin Escape (pendiente si se pide).2026-10-08 23:05 - Spec 001: tasks.md actualizado (separa ListaRanking con tests TL, renumera, quita verificación DevTools de lista vacía)
