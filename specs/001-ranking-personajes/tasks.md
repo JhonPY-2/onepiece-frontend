@@ -14,7 +14,7 @@
   - Código: Implementar `formatearRecompensa`, `formatearTripulacion`, `esListaRankingValida` en `src/lib/ranking.js`, sin JSX, sin fetch, sin estado React. Seguir exactamente la firma/semántica del plan.
   - Hecho cuando: Tests fallan inicialmente (TDD) y luego pasan con implementación pura.
 
-- [ ] **T3. Tests + código para `aListaRanking` y `obtenerRanking` (lógica pura + fetch simulado).** RF-1, RF-4, RF-9, RNF-3
+- [x] **T3. Tests + código para `aListaRanking` y `obtenerRanking` (lógica pura + fetch simulado).** RF-1, RF-4, RF-9, RNF-3
   - Tests: Ampliar `src/lib/ranking.test.js` con: `aListaRanking` conserva el **orden exacto** recibido y normaliza `tripulacion` ausente a `null`; `obtenerRanking` usa `API_URL` de `@/lib/api`, `cache: 'no-store'`, sin parámetros; con `respuesta.ok === false` lanza error; con JSON inválido para el shape lanza error (cuerpo inválido); con lista válida devuelve array mapeado preservando orden. Usar mocks de `global.fetch` (Vitest). Los tests deben **fallar** antes del código.
   - Código: Implementar `aListaRanking(datos)` (preserva orden) y `obtenerRanking()` en `src/lib/ranking.js`: `fetch(\`${API_URL}/personajes/ranking\`, { cache: 'no-store' })`; si `!respuesta.ok` → `throw new Error('respuesta no exitosa')`; parsea JSON (si falla debe propagarse); valida con `esListaRankingValida` → `throw new Error('cuerpo inválido')` si inválido; devuelve `aListaRanking(datos)`. No modificar `API_URL` (RNF-3).
   - Hecho cuando: Tests fallan antes de código (TDD) y pasan. `obtenerRanking` usa `API_URL` y `cache: 'no-store'`.

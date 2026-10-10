@@ -28,7 +28,7 @@
 
 ## Próximos pasos
 - Spec 001 T1 completada: `vitest.config.mjs` (jsdom, alias `@`→`src`, plugin React, `setupFiles`) y `vitest.setup.js` (`@testing-library/jest-dom/vitest`); scripts `test`/`test:run` en `package.json`. DevDeps instaladas por el usuario en Windows; `npx vitest --version` → `vitest/5.0.3`. Añadido `test.pool = 'threads'`: en Windows el pool por defecto (forks) no arranca ("Timeout waiting for worker to respond").
-- Spec 001 T2 completada: `src/lib/ranking.js` con `formatearRecompensa`, `formatearTripulacion` y `esListaRankingValida` (TDD; `src/lib/ranking.test.js` con 11 casos en verde). Pendiente `aListaRanking` y `obtenerRanking` (T3).
+- Spec 001 T2/T3 completadas: `src/lib/ranking.js` con `formatearRecompensa`, `formatearTripulacion`, `esListaRankingValida`, `aListaRanking` (preserva orden, `tripulacion ?? null`) y `obtenerRanking` (fetch `${API_URL}/personajes/ranking` con `cache: 'no-store'`, lanza `'respuesta no exitosa'` si `!ok`, `'cuerpo inválido'` si no valida, y deja propagar el error de `json()`). `src/lib/ranking.test.js` (18 casos, verde) empieza con `// @vitest-environment node`: `obtenerRanking` corre en el servidor y jsdom tardaba ~60 s en arrancar. T3 marcada `[x]`. Pendiente T4 (`ListaRanking.js`).
 - Conectar el `input type="search"` decorativo de `deportes/page.js` (mismo patrón que personajes).
 - Opcional: que `[id]/page.js` importen de `src/lib/personajes.js` para eliminar los helpers duplicados.
 - Drawer del sidebar: el cierre solo por cambio de ruta deja overlay sin click-to-close y sin Escape (pendiente si se pide).2026-10-08 23:05 - Spec 001: tasks.md actualizado (separa ListaRanking con tests TL, renumera, quita verificación DevTools de lista vacía)

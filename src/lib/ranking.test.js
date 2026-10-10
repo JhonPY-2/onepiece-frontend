@@ -1,9 +1,17 @@
-import { describe, expect, it } from 'vitest';
+// @vitest-environment node
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { API_URL } from '@/lib/api';
 import {
+  aListaRanking,
   esListaRankingValida,
   formatearRecompensa,
   formatearTripulacion,
+  obtenerRanking,
 } from './ranking';
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
 
 describe('formatearRecompensa', () => {
   it('devuelve el número con separadores y el sufijo " berries"', () => {
@@ -73,5 +81,100 @@ describe('esListaRankingValida', () => {
     expect(
       esListaRankingValida([{ nombre: 'Luffy', recompensa: 3300000000, tripulacion: 123 }])
     ).toBe(false);
+  });
+});
+
+describe('aListaRanking', () => {
+  it('conserva el orden exacto recibido', () => {
+    const datos = [
+      { nombre: 'Luffy', recompensa: 3300000000, tripulacion: 'Sombrero de Paja' },
+      { nombre: 'Zoro', recompensa: 1111000000, tripulacion: 'Sombrero de Paja' },
+      { nombre: 'Nami', recompensa: 366000000, tripulacion: null },
+    ];
+
+    const resultado = aListaRanking(datos);
+
+    expect(resultado.map((entrada) => entrada.nombre)).toEqual(['Luffy', 'Zoro', 'Nami']);
+    expect(resultado).toEqual([
+      { nombre: 'Luffy', recompensa: 3300000000, tripulacion: 'Sombrero de Paja' },
+      { nombre: 'Zoro', recompensa: 1111000000, tripulacion: 'Sombrero de Paja' },
+      { nombre: 'Nami', recompensa: 366000000, tripulacion: null },
+    ]);
+  });
+
+  it('normaliza tripulacion ausente a null', () => {
+    const resultado = aListaRanking([{ nombre: 'Luffy', recompensa: 3300000000 }]);
+
+    expect(resultado).toEqual([
+      { nombre: 'Luffy', recompensa: 3300000000, tripulacion: null },
+    ]);
+  });
+});
+
+describe('obtenerRanking', () => {
+  it('llama a `${API_URL}/personajes/ranking` con cache no-store y sin parámetros', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => [],
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    await obtenerRanking();
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock).toHaveBeenCalledWith(`${API_URL}/personajes/ranking`, {
+      cache: 'no-store',
+    });
+  });
+
+  it('lanza error cuando la respuesta no es exitosa', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({ ok: false, json: async () => ({}) })
+    );
+
+    await expect(obtenerRanking()).rejects.toThrow();
+  });
+
+  it('lanza error cuando el JSON no cumple el formato', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({ nombre: 'Luffy' }),
+      })
+    );
+
+    await expect(obtenerRanking()).rejects.toThrow();
+  });
+
+  it('propaga el error cuando json() rechaza', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => {
+          throw new Error('json roto');
+        },
+      })
+    );
+
+    await expect(obtenerRanking()).rejects.toThrow('json roto');
+  });
+
+  it('con una lista válida devuelve la lista mapeada en el mismo orden', async () => {
+    const datos = [
+      { nombre: 'Luffy', recompensa: 3300000000, tripulacion: 'Sombrero de Paja' },
+      { nombre: 'Zoro', recompensa: 1111000000, tripulacion: 'Sombrero de Paja' },
+      { nombre: 'Nami', recompensa: 366000000, tripulacion: null },
+    ];
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({ ok: true, json: async () => datos })
+    );
+
+    const resultado = await obtenerRanking();
+
+    expect(resultado).toEqual(datos);
   });
 });
