@@ -19,7 +19,7 @@
   - Código: Implementar `aListaRanking(datos)` (preserva orden) y `obtenerRanking()` en `src/lib/ranking.js`: `fetch(\`${API_URL}/personajes/ranking\`, { cache: 'no-store' })`; si `!respuesta.ok` → `throw new Error('respuesta no exitosa')`; parsea JSON (si falla debe propagarse); valida con `esListaRankingValida` → `throw new Error('cuerpo inválido')` si inválido; devuelve `aListaRanking(datos)`. No modificar `API_URL` (RNF-3).
   - Hecho cuando: Tests fallan antes de código (TDD) y pasan. `obtenerRanking` usa `API_URL` y `cache: 'no-store'`.
 
-- [ ] **T4. Crear `src/components/ListaRanking.js` con tests de Testing Library (presentación).** RF-4, RF-5, RF-7, RF-8
+- [x] **T4. Crear `src/components/ListaRanking.js` con tests de Testing Library (presentación).** RF-4, RF-5, RF-7, RF-8
   - Tests: Crear `src/components/ListaRanking.test.js` con: lista vacía → muestra `"No hay personajes en el ranking"`; 3 entradas en el mismo orden con posiciones 1, 2, 3, mostrando nombre, `formatearRecompensa` y `formatearTripulacion`; entrada con `tripulacion: null` → muestra `"Sin tripulación"`. Los tests deben **fallar** antes del código.
   - Código: Crear `src/components/ListaRanking.js` (sin `'use client'`) que recibe `{ entradas }`, importa `formatearRecompensa` y `formatearTripulacion` desde `@/lib/ranking`, renderiza `<ol className="space-y-2">` con `<li>` por entrada mostrando posición `i + 1`, nombre, recompensa formateada y tripulación formateada; si `!Array.isArray(entradas)` o `entradas.length === 0` → muestra `<p>No hay personajes en el ranking</p>`. Sin fetch, sin estado ni eventos.
   - Hecho cuando: Tests de Testing Library fallan inicialmente (TDD) y luego pasan.
