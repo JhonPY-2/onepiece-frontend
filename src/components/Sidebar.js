@@ -33,6 +33,7 @@ export default function Sidebar({ abierto }) {
   const deportesActivo = pathname?.startsWith('/deportes') ?? false;
   const tripulacionesActivo = pathname?.startsWith('/tripulaciones') ?? false;
   const estadisticasActivo = pathname?.startsWith('/estadisticas') ?? false;
+  const rankingActivo = pathname?.startsWith('/ranking') ?? false;
   const nombreMostrado = username || 'Usuario';
   const inicial = nombreMostrado.charAt(0).toUpperCase();
 
@@ -88,6 +89,14 @@ export default function Sidebar({ abierto }) {
           }`}
         >
           📊 Estadísticas
+        </Link>
+        <Link
+          href="/ranking"
+          className={`text-white text-base px-4 py-3 rounded-lg flex items-center gap-2 transition-colors ${
+            rankingActivo ? 'bg-gold/15' : 'bg-transparent'
+          }`}
+        >
+          🏆 Ranking
         </Link>
       </nav>
       {estaAutenticado ? (
