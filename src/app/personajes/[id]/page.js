@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import BotonesAccion from './BotonesAccion';
 import { API_URL } from '@/lib/api';
+import { formatearRecompensa } from '@/lib/ranking';
 
 const resplandores = [
   { clave: 'luffy', color: '#D4A034' },
@@ -82,7 +83,7 @@ export default async function PaginaPersonaje({ params }) {
 
           <p className="text-gray-200 mb-4 text-lg">
             <span className="text-secondary">Recompensa:</span>{' '}
-            {personaje.recompensa.toLocaleString()} berries
+            {formatearRecompensa(personaje.recompensa)}
           </p>
 
           {personaje.frutaDiablo?.nombre && (

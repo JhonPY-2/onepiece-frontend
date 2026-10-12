@@ -34,7 +34,7 @@
   - Código: Modificar `src/components/Sidebar.js` para añadir enlace `"Ranking"` (emoji) a `/ranking`, con estado activo cuando `pathname === '/ranking'`. Mantener estilo/estructura existente, sin tocar otras secciones.
   - Hecho cuando: **Chrome DevTools (solo lectura)** — Entrada "Ranking" visible con emoji, enlace a `/ranking`, estado activo en `/ranking`. Verificado con sesión iniciada y sin sesión, en **vista móvil 375 px** (drawer) y en `md+`. Consola sin errores.
 
-- [ ] **T7. Detalle del personaje: usar `formatearRecompensa` (cambio mínimo).** RF-6
+- [x] **T7. Detalle del personaje: usar `formatearRecompensa` (cambio mínimo).** RF-6
   - Tests: Ninguno (refactor mínimo).
   - Código: Modificar `src/app/personajes/[id]/page.js` para reemplazar `personaje.recompensa.toLocaleString()` por `formatearRecompensa(personaje.recompensa)`, importando desde `@/lib/ranking`. Sin otros cambios.
   - Hecho cuando: **Chrome DevTools (solo lectura)** — En `/personajes/:id` el texto de recompensa coincide exactamente con el formato `${toLocaleString()} berries` usado en `/ranking` para el mismo número.
