@@ -1,6 +1,6 @@
 # specs/001-ranking-personajes/spec.md
 
-**Estado: aprobada**
+**Estado: implementada**
 
 ## Contexto y objetivo
 El backend ya expone `GET /personajes/ranking`, que devuelve como máximo 10 entradas ya ordenadas por recompensa descendente y desempatadas por nombre sin distinguir mayúsculas. La lista actual de personajes no permite ver quiénes tienen las recompensas más altas. El objetivo es ofrecer una página de ranking que muestre esos personajes con mayor recompensa.
