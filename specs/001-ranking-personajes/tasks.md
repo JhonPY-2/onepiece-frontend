@@ -39,7 +39,7 @@
   - Código: Modificar `src/app/personajes/[id]/page.js` para reemplazar `personaje.recompensa.toLocaleString()` por `formatearRecompensa(personaje.recompensa)`, importando desde `@/lib/ranking`. Sin otros cambios.
   - Hecho cuando: **Chrome DevTools (solo lectura)** — En `/personajes/:id` el texto de recompensa coincide exactamente con el formato `${toLocaleString()} berries` usado en `/ranking` para el mismo número.
 
-- [ ] **T8. Validación de error con `retry()` (casos límite RF-9).** RF-9
+- [x] **T8. Validación de error con `retry()` (casos límite RF-9).** RF-9
   - Tests: Ninguno (UI).
   - Código: `src/app/ranking/error.js` se crea en T5. En esta tarea solo se comprueba su comportamiento: que usa `retry()` (no `reset()`), que el mensaje exacto es `"No se pudo cargar el ranking. Inténtalo de nuevo."` y que el botón `"Reintentar"` existe. Error boundary cubre el segmento `/ranking`.
   - Hecho cuando: **Chrome DevTools (solo lectura)** — Simulando fallo (backend detenido o respuesta no exitosa/cuerpo inválido), aparece mensaje exacto + botón "Reintentar". Al pulsar "Reintentar", `retry()` relanza la petición `GET /personajes/ranking` (Network muestra nueva request); si vuelve a fallar, vuelve a mostrar el error. Solo lectura.
