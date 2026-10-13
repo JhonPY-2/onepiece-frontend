@@ -1,6 +1,6 @@
 # specs/002-chat-ia/tasks.md
 
-**Estado: borrador**
+**Estado: aprobada**
 
 ## Tareas
 
@@ -49,7 +49,7 @@
   - Código: Ajustar el layout de `Chat.js` (área de mensajes centrada `max-w-3xl mx-auto`, composer al final, sugerencias que envuelven) usando la paleta existente, sin colores nuevos.
   - Hecho cuando: **Chrome DevTools (solo lectura)** a **375 px** — `document.documentElement.scrollWidth === window.innerWidth` (sin scroll horizontal); las tres sugerencias se ven completas; en escritorio el área está centrada con ancho máximo y la caja de entrada fija abajo. Consola sin errores.
 
-- [ ] **T10. Verificación final: lint/build y trazabilidad RF→tests→código.** RF-1–RF-27, RNF-1–RNF-5
+- [x] **T10. Verificación final: lint/build y trazabilidad RF→tests→código.** RF-1–RF-27, RNF-1–RNF-5
   - Tests: `npx vitest run src/lib/chat.test.js` (todo verde). `npm run lint` y `npm run build` (PowerShell).
   - Código: Revisar el mapeo RF→implementación/tests del plan; revisar RNF-1 (sin `fetch` en `src/lib/chat.js`; Network sin peticiones a backend/n8n salvo recursos estáticos de la app), RNF-2 (todo en español) y RNF-5 (solo lectura). Actualizar `MEMORY.md`.
   - Hecho cuando: vitest, `npm run lint` y `npm run build` pasan sin errores; los criterios 1–13 de la spec quedan verificados con **Chrome DevTools (solo lectura)** (incluida la vista de 375 px) y la spec queda lista para marcar `implementada`.
