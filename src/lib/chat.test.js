@@ -55,13 +55,6 @@ describe('RESPUESTA_DEMO', () => {
   });
 });
 
-describe('ESPERA_MS', () => {
-  it('está entre 1500 y 3000 milisegundos', () => {
-    expect(ESPERA_MS).toBeGreaterThanOrEqual(1500);
-    expect(ESPERA_MS).toBeLessThanOrEqual(3000);
-  });
-});
-
 describe('crearMensaje', () => {
   it('devuelve { id, autor, texto }', () => {
     expect(crearMensaje('x', 'usuario', 1)).toEqual({
@@ -73,15 +66,27 @@ describe('crearMensaje', () => {
 });
 
 describe('enviarMensajeChat', () => {
-  it('resuelve RESPUESTA_DEMO tras esperar ESPERA_MS', async () => {
+  it('no resuelve antes de 1500 ms y sí con RESPUESTA_DEMO al completar 3000 ms (RF-22)', async () => {
     vi.useFakeTimers();
 
-    const promesa = enviarMensajeChat('x');
-    await vi.advanceTimersByTimeAsync(ESPERA_MS);
+    let resuelto = false;
+    let valor = null;
+    const promesa = enviarMensajeChat('x').then((respuesta) => {
+      resuelto = true;
+      valor = respuesta;
+    });
 
-    await expect(promesa).resolves.toBe(RESPUESTA_DEMO);
+    await vi.advanceTimersByTimeAsync(1499);
+    expect(resuelto).toBe(false);
+
+    await vi.advanceTimersByTimeAsync(3000 - 1499);
+    await promesa;
+    expect(resuelto).toBe(true);
+    expect(valor).toBe(RESPUESTA_DEMO);
   });
 
+  // RF-8: la respuesta de demostración ignora la entrada a propósito, por eso
+  // este test solo comprueba que el texto fijo es el mismo (no depende del mensaje).
   it('dos mensajes distintos resuelven la misma RESPUESTA_DEMO', async () => {
     vi.useFakeTimers();
 

@@ -1,6 +1,6 @@
 # specs/002-chat-ia/spec.md
 
-**Estado: aprobada**
+**Estado: implementada**
 
 ## Contexto y objetivo
 El proyecto no tiene forma de conversar con un asistente sobre One Piece. Se necesita una sección de chat que hoy sirva como maqueta de interfaz con apariencia moderna tipo ChatGPT; no habla con ningún backend ni con n8n: las respuestas son un texto fijo de demostración. El objetivo es dejar lista y verificable la experiencia (estado vacío, mensajes, envío, indicador de "escribiendo…") con un único punto identificable donde más adelante se conecte n8n. El historial vive solo en memoria de la página y no se guarda.
