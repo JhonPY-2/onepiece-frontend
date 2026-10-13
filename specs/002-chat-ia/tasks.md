@@ -14,7 +14,7 @@
   - Código: Crear `src/app/chat/page.js` (Server Component delgado: `<main>` + `<Chat />`), `src/app/chat/Chat.js` (`'use client'`, layout `flex flex-col h-[calc(100dvh-4rem)] md:h-screen`, `<h1>Chat de One Piece</h1>`, estado vacío con el saludo y las tres sugerencias exactas, foco inicial), `src/components/ListaMensajes.js` y `src/components/CajaMensaje.js` (presentación). Aún sin lógica de envío.
   - Hecho cuando: **Chrome DevTools (solo lectura)** en `http://localhost:3001/chat` — se ven el título "Chat de One Piece", el saludo "¡Hola! Soy tu asistente de One Piece. ¿Sobre qué quieres preguntar?" y las tres sugerencias exactas; la caja multilínea y el botón "Enviar" son visibles; el foco está en el textarea al abrir `/chat`. Consola sin errores.
 
-- [ ] **T3. Flujo de envío: burbujas, "escribiendo…", respuesta demo y auto-scroll.** RF-4, RF-5, RF-6, RF-7, RF-8, RF-10, RF-12, RF-22
+- [x] **T3. Flujo de envío: burbujas, "escribiendo…", respuesta demo y auto-scroll.** RF-4, RF-5, RF-6, RF-7, RF-8, RF-10, RF-12, RF-22
   - Tests: Ninguno (UI); la lógica ya está cubierta en T1.
   - Código: Conectar en `Chat.js` `enviar(valor)` usando `@/lib/chat`: añade burbuja de usuario, vacía la caja, muestra "escribiendo…" y al terminar añade la burbuja de asistente con la respuesta fija; `onClick` de las tres sugerencias llama a `enviar`; `useEffect([mensajes, escribiendo])` hace `scrollIntoView`.
   - Hecho cuando: **Chrome DevTools (solo lectura)** — al pulsar una sugerencia o escribir y pulsar Enter aparece la burbuja del usuario, la caja queda vacía, se ve "escribiendo…" entre 1,5 y 3 s (cronometrado) y luego la respuesta fija "(Respuesta de demostración) …"; con muchos mensajes el último queda visible (auto-scroll).
