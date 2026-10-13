@@ -4,7 +4,7 @@
 
 ## Tareas
 
-- [ ] **T1. Lógica pura en `src/lib/chat.js` con tests (TDD).** RF-7, RF-8, RF-9, RF-17, RF-22
+- [x] **T1. Lógica pura en `src/lib/chat.js` con tests (TDD).** RF-7, RF-8, RF-9, RF-17, RF-22
   - Tests: Crear `src/lib/chat.test.js` antes del código (deben **fallar** primero). Casos: `esMensajeVacio('')`, `'   '`, `' \n\t '`, `null`, `undefined` → `true`; `'hola'`, `'  hola '` → `false`; `RESPUESTA_DEMO` empieza por `"(Respuesta de demostración)"` y coincide con el texto exacto de RF-7; `ESPERA_MS` entre 1500 y 3000; `crearMensaje('x','usuario',1)` → `{ id:1, autor:'usuario', texto:'x' }`; `enviarMensajeChat('x')` resuelve `RESPUESTA_DEMO` (fake timers); dos mensajes distintos → mismo `RESPUESTA_DEMO`.
   - Código: Crear `src/lib/chat.js` (sin JSX, sin React, sin estado) exportando `RESPUESTA_DEMO`, `ESPERA_MS = 2000`, `esMensajeVacio`, `crearMensaje` y `enviarMensajeChat` (único punto reemplazable RF-17: espera `ESPERA_MS` y devuelve `RESPUESTA_DEMO`). Sin `fetch`.
   - Hecho cuando: `npx vitest run src/lib/chat.test.js` pasa en verde (tras verlos en rojo), ejecutado por el usuario en PowerShell.
