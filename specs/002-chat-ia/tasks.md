@@ -24,7 +24,7 @@
   - Código: En `Chat.js`, `enviar` sale si `esMensajeVacio(valor)`; añadir `enviandoRef` (`useRef`) como guard síncrono y `try/finally` para liberar siempre `enviandoRef.current = false` y `setEscribiendo(false)`. En `CajaMensaje.js`, botón `disabled={deshabilitado}` mientras se escribe.
   - Hecho cuando: **Chrome DevTools (solo lectura)** — enviar con la caja vacía, con solo espacios o con solo saltos no añade burbujas; durante "escribiendo…" el botón "Enviar" está deshabilitado y pulsar Enter o el botón repetidamente no añade mensajes ni respuestas duplicadas.
 
-- [ ] **T5. Composer multilínea: Enter/Shift+Enter y máximo 6 líneas con scroll interno.** RF-20, RF-21, RF-23, RF-24
+- [x] **T5. Composer multilínea: Enter/Shift+Enter y máximo 6 líneas con scroll interno.** RF-20, RF-21, RF-23, RF-24
   - Tests: Ninguno (UI).
   - Código: En `CajaMensaje.js`, `textarea` con `leading-6`, `resize-none`, `field-sizing-content`, `max-h-[10.5rem]` (6 líneas) y `overflow-y-auto`; en `Chat.js`, `onKeyDown`: Enter sin Shift → `preventDefault()` + `enviar`; Shift+Enter no se previene.
   - Hecho cuando: **Chrome DevTools (solo lectura)** — Enter envía sin insertar salto; Shift+Enter inserta salto sin enviar; al superar 6 líneas la caja no crece y aparece scroll interno (`scrollHeight > clientHeight`).

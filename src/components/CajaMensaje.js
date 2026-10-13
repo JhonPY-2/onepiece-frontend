@@ -11,7 +11,7 @@ export default function CajaMensaje({ valor, onCambio, onEnviar, onTecla, deshab
         onKeyDown={onTecla}
         placeholder="Escribe tu mensaje…"
         aria-label="Escribe tu mensaje"
-        className="flex-1 bg-white/10 rounded-2xl px-4 py-3 text-white placeholder-gray-400 outline-none focus:bg-white/15 leading-6 resize-none"
+        className="flex-1 bg-white/10 rounded-2xl px-4 py-3 text-white placeholder-gray-400 outline-none focus:bg-white/15 leading-6 resize-none field-sizing-content max-h-[10.5rem] overflow-y-auto"
       />
       <button
         type="button"
