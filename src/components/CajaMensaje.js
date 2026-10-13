@@ -1,4 +1,4 @@
-export default function CajaMensaje({ valor, onCambio, onEnviar, onTecla, refCaja }) {
+export default function CajaMensaje({ valor, onCambio, onEnviar, onTecla, deshabilitado = false, refCaja }) {
   return (
     <div className="max-w-3xl w-full mx-auto pt-4 flex items-end gap-3">
       <textarea
@@ -16,7 +16,8 @@ export default function CajaMensaje({ valor, onCambio, onEnviar, onTecla, refCaj
       <button
         type="button"
         onClick={() => onEnviar(valor)}
-        className="bg-gold text-white font-semibold px-5 py-3 rounded-2xl shrink-0"
+        disabled={deshabilitado}
+        className="bg-gold text-white font-semibold px-5 py-3 rounded-2xl shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Enviar
       </button>

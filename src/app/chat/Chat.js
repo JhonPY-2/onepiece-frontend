@@ -100,6 +100,7 @@ export default function Chat() {
         onCambio={setTexto}
         onEnviar={enviar}
         onTecla={onTecla}
+        deshabilitado={escribiendo}
         refCaja={refCaja}
       />
     </>

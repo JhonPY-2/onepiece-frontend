@@ -19,7 +19,7 @@
   - Código: Conectar en `Chat.js` `enviar(valor)` usando `@/lib/chat`: añade burbuja de usuario, vacía la caja, muestra "escribiendo…" y al terminar añade la burbuja de asistente con la respuesta fija; `onClick` de las tres sugerencias llama a `enviar`; `useEffect([mensajes, escribiendo])` hace `scrollIntoView`.
   - Hecho cuando: **Chrome DevTools (solo lectura)** — al pulsar una sugerencia o escribir y pulsar Enter aparece la burbuja del usuario, la caja queda vacía, se ve "escribiendo…" entre 1,5 y 3 s (cronometrado) y luego la respuesta fija "(Respuesta de demostración) …"; con muchos mensajes el último queda visible (auto-scroll).
 
-- [ ] **T4. Guardas: mensaje vacío y prevención de doble envío.** RF-9, RF-11
+- [x] **T4. Guardas: mensaje vacío y prevención de doble envío.** RF-9, RF-11
   - Tests: Ninguno (UI); `esMensajeVacio` ya probado en T1.
   - Código: En `Chat.js`, `enviar` sale si `esMensajeVacio(valor)`; añadir `enviandoRef` (`useRef`) como guard síncrono y `try/finally` para liberar siempre `enviandoRef.current = false` y `setEscribiendo(false)`. En `CajaMensaje.js`, botón `disabled={deshabilitado}` mientras se escribe.
   - Hecho cuando: **Chrome DevTools (solo lectura)** — enviar con la caja vacía, con solo espacios o con solo saltos no añade burbujas; durante "escribiendo…" el botón "Enviar" está deshabilitado y pulsar Enter o el botón repetidamente no añade mensajes ni respuestas duplicadas.
