@@ -9,7 +9,7 @@
   - Código: Crear `src/lib/chat.js` (sin JSX, sin React, sin estado) exportando `RESPUESTA_DEMO`, `ESPERA_MS = 2000`, `esMensajeVacio`, `crearMensaje` y `enviarMensajeChat` (único punto reemplazable RF-17: espera `ESPERA_MS` y devuelve `RESPUESTA_DEMO`). Sin `fetch`.
   - Hecho cuando: `npx vitest run src/lib/chat.test.js` pasa en verde (tras verlos en rojo), ejecutado por el usuario en PowerShell.
 
-- [ ] **T2. Ruta `/chat` y componentes de presentación (esqueleto estático).** RF-1, RF-2, RF-3, RF-14, RF-26
+- [x] **T2. Ruta `/chat` y componentes de presentación (esqueleto estático).** RF-1, RF-2, RF-3, RF-14, RF-26
   - Tests: Ninguno (UI).
   - Código: Crear `src/app/chat/page.js` (Server Component delgado: `<main>` + `<Chat />`), `src/app/chat/Chat.js` (`'use client'`, layout `flex flex-col h-[calc(100dvh-4rem)] md:h-screen`, `<h1>Chat de One Piece</h1>`, estado vacío con el saludo y las tres sugerencias exactas, foco inicial), `src/components/ListaMensajes.js` y `src/components/CajaMensaje.js` (presentación). Aún sin lógica de envío.
   - Hecho cuando: **Chrome DevTools (solo lectura)** en `http://localhost:3001/chat` — se ven el título "Chat de One Piece", el saludo "¡Hola! Soy tu asistente de One Piece. ¿Sobre qué quieres preguntar?" y las tres sugerencias exactas; la caja multilínea y el botón "Enviar" son visibles; el foco está en el textarea al abrir `/chat`. Consola sin errores.
