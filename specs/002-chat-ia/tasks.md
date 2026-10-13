@@ -44,7 +44,7 @@
   - Código: Confirmar que el historial vive solo en el estado local de `Chat.js` (nada en `localStorage`/cookies ni en store global/contexto). Sin cambios si T2/T3 ya cumplen; si hay persistencia, eliminarla.
   - Hecho cuando: **Chrome DevTools (solo lectura)** — tras enviar mensajes, recargar `/chat` vuelve al estado vacío; salir a otra sección y volver por navegación del lado del cliente muestra el estado vacío; Storage sin datos del chat.
 
-- [ ] **T9. Responsive 375 px y estilos de la paleta.** RF-18, RNF-4
+- [x] **T9. Responsive 375 px y estilos de la paleta.** RF-18, RNF-4
   - Tests: Ninguno (UI).
   - Código: Ajustar el layout de `Chat.js` (área de mensajes centrada `max-w-3xl mx-auto`, composer al final, sugerencias que envuelven) usando la paleta existente, sin colores nuevos.
   - Hecho cuando: **Chrome DevTools (solo lectura)** a **375 px** — `document.documentElement.scrollWidth === window.innerWidth` (sin scroll horizontal); las tres sugerencias se ven completas; en escritorio el área está centrada con ancho máximo y la caja de entrada fija abajo. Consola sin errores.
