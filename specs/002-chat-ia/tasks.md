@@ -39,7 +39,7 @@
   - Código: En `src/components/Sidebar.js`, añadir en el primer `<nav>` (visible con y sin sesión) un `Link` `href="/chat"` con texto `💬 Chat` y `chatActivo = pathname?.startsWith('/chat')` → `bg-gold/15` cuando activo. Sin tocar otras entradas.
   - Hecho cuando: **Chrome DevTools (solo lectura)** — la entrada "💬 Chat" es visible con y sin sesión, enlaza a `/chat` y muestra estado activo en `/chat`; en **375 px** se ve en el drawer y en `md+` en el sidebar.
 
-- [ ] **T8. Historial efímero y sin persistencia.** RF-16, RF-25, RNF-3
+- [x] **T8. Historial efímero y sin persistencia.** RF-16, RF-25, RNF-3
   - Tests: Ninguno (UI).
   - Código: Confirmar que el historial vive solo en el estado local de `Chat.js` (nada en `localStorage`/cookies ni en store global/contexto). Sin cambios si T2/T3 ya cumplen; si hay persistencia, eliminarla.
   - Hecho cuando: **Chrome DevTools (solo lectura)** — tras enviar mensajes, recargar `/chat` vuelve al estado vacío; salir a otra sección y volver por navegación del lado del cliente muestra el estado vacío; Storage sin datos del chat.
