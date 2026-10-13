@@ -34,7 +34,7 @@
   - Código: En `ListaMensajes.js`, contenedor `justify-end`/`justify-start` y burbuja `bg-gold text-white` (usuario) vs `bg-white/10 text-white` (asistente), `rounded-2xl`; renderizar `{m.texto}` (React escapa), sin `dangerouslySetInnerHTML`.
   - Hecho cuando: **Chrome DevTools (solo lectura)** — las burbujas de usuario y asistente se ven en lados opuestos y con colores de fondo distintos; enviar `<b>hola</b>`, `<script>` y `&` se muestran como texto literal (sin negrita ni ejecución de script).
 
-- [ ] **T7. Sidebar: entrada "💬 Chat" con estado activo.** RF-15, RF-19
+- [x] **T7. Sidebar: entrada "💬 Chat" con estado activo.** RF-15, RF-19
   - Tests: Ninguno (UI).
   - Código: En `src/components/Sidebar.js`, añadir en el primer `<nav>` (visible con y sin sesión) un `Link` `href="/chat"` con texto `💬 Chat` y `chatActivo = pathname?.startsWith('/chat')` → `bg-gold/15` cuando activo. Sin tocar otras entradas.
   - Hecho cuando: **Chrome DevTools (solo lectura)** — la entrada "💬 Chat" es visible con y sin sesión, enlaza a `/chat` y muestra estado activo en `/chat`; en **375 px** se ve en el drawer y en `md+` en el sidebar.

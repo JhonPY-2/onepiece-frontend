@@ -34,6 +34,7 @@ export default function Sidebar({ abierto }) {
   const tripulacionesActivo = pathname?.startsWith('/tripulaciones') ?? false;
   const estadisticasActivo = pathname?.startsWith('/estadisticas') ?? false;
   const rankingActivo = pathname?.startsWith('/ranking') ?? false;
+  const chatActivo = pathname?.startsWith('/chat') ?? false;
   const nombreMostrado = username || 'Usuario';
   const inicial = nombreMostrado.charAt(0).toUpperCase();
 
@@ -97,6 +98,14 @@ export default function Sidebar({ abierto }) {
           }`}
         >
           🏆 Ranking
+        </Link>
+        <Link
+          href="/chat"
+          className={`text-white text-base px-4 py-3 rounded-lg flex items-center gap-2 transition-colors ${
+            chatActivo ? 'bg-gold/15' : 'bg-transparent'
+          }`}
+        >
+          💬 Chat
         </Link>
       </nav>
       {estaAutenticado ? (
