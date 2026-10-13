@@ -29,7 +29,7 @@
   - Código: En `CajaMensaje.js`, `textarea` con `leading-6`, `resize-none`, `field-sizing-content`, `max-h-[10.5rem]` (6 líneas) y `overflow-y-auto`; en `Chat.js`, `onKeyDown`: Enter sin Shift → `preventDefault()` + `enviar`; Shift+Enter no se previene.
   - Hecho cuando: **Chrome DevTools (solo lectura)** — Enter envía sin insertar salto; Shift+Enter inserta salto sin enviar; al superar 6 líneas la caja no crece y aparece scroll interno (`scrollHeight > clientHeight`).
 
-- [ ] **T6. Burbujas: lados/colores distintos y texto literal.** RF-13, RF-27
+- [x] **T6. Burbujas: lados/colores distintos y texto literal.** RF-13, RF-27
   - Tests: Ninguno (UI).
   - Código: En `ListaMensajes.js`, contenedor `justify-end`/`justify-start` y burbuja `bg-gold text-white` (usuario) vs `bg-white/10 text-white` (asistente), `rounded-2xl`; renderizar `{m.texto}` (React escapa), sin `dangerouslySetInnerHTML`.
   - Hecho cuando: **Chrome DevTools (solo lectura)** — las burbujas de usuario y asistente se ven en lados opuestos y con colores de fondo distintos; enviar `<b>hola</b>`, `<script>` y `&` se muestran como texto literal (sin negrita ni ejecución de script).
