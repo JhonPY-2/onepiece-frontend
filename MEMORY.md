@@ -18,6 +18,7 @@
 - Sidebar responsive: `w-60` fijo en desktop, drawer en móvil con hamburguesa en `AppShell` (patrón estándar, evita solapamiento con título/buscador).
 - Headers responsive: `flex-col sm:flex-row`, títulos con `break-words sm:whitespace-nowrap`, buscador `w-full sm:w-64`.
 - Padding responsive: `p-4 sm:p-8` + wrapper `pt-16 md:pt-0` para que el hamburguesa no tape el contenido.
+- Agentes SDD en `.opencode/agents/`: `coordinator` (primario), `planner` (solo escribe en `specs/`), `implementer` (sin shell, dos fases; no puede editar `docs/constitution.md`, `AGENTS.md`, `.opencode/**` ni `vitest.*`) y `reviewer` (solo lectura). Copiados de onepiece-estadisticas el 2026-10-18 y adaptados a Vitest + Testing Library; el flujo completo aún no se ha probado en este repo.
 
 ## Aprendizajes y errores a evitar
 - `useSearchParams()` requiere `<Suspense>` (ej.: `tripulantes/nuevo`).
@@ -26,6 +27,8 @@
 - No pasar documentos de Mongoose a Client Components (`_id` es un `ObjectId`, `tripulacion` viene poblada): aplanar antes con un mapper.
 - `src/lib/personajes.js` centraliza `imagenDe`/`resplandorPorNombre`/`imagenPorNombre`; `personajes/[id]/page.js` y `tripulantes/[id]/page.js` aún tienen copias inline.
 - Verificar responsive midiendo `documentElement.scrollWidth === innerWidth` a 375px; nada de `whitespace-nowrap` en títulos móviles.
+- Permisos de agentes de opencode: en el encabezado de `.opencode/agents/*.md` se usa la clave `permission:` en singular y como mapa (`edit: deny`, `bash: { "*": deny, "git diff*": allow }`, `task: { "*": deny, "planner": allow }`; en `edit` primero `"*"` y después las rutas, porque gana la última regla que coincide). La lista `permissions:` con action/resource/effect que se usó al principio no se aplicaba. Comprobado el 2026-10-18 en este repo con el implementer: con el formato nuevo no pudo editar un archivo protegido por `vitest.*` y sí uno de control permitido; `bash` y `task` no se probaron aquí.
+- Cómo comprobar un permiso: pedirle al agente que modifique un archivo de prueba y mirar el disco con Get-Content (no fiarse de lo que cuente el agente), con un archivo de control que sí esté permitido. Los agentes se releen al reiniciar la pestaña de opencode.
 
 ## Próximos pasos
 - Spec 001 T1 completada: `vitest.config.mjs` (jsdom, alias `@`→`src`, plugin React, `setupFiles`) y `vitest.setup.js` (`@testing-library/jest-dom/vitest`); scripts `test`/`test:run` en `package.json`. DevDeps instaladas por el usuario en Windows; `npx vitest --version` → `vitest/5.0.3`. Añadido `test.pool = 'threads'`: en Windows el pool por defecto (forks) no arranca ("Timeout waiting for worker to respond").
