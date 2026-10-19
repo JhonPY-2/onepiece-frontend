@@ -1,25 +1,14 @@
 ---
 description: SDD - revisa la spec como QA (clarificación) y valida la implementación RF por RF, sin modificar nada
 mode: subagent
-permissions:
-  - action: edit
-    resource: "*"
-    effect: deny
-  - action: shell
-    resource: "*"
-    effect: deny
-  - action: shell
-    resource: "git diff*"
-    effect: allow
-  - action: shell
-    resource: "git status*"
-    effect: allow
-  - action: webfetch
-    resource: "*"
-    effect: deny
-  - action: subagent
-    resource: "*"
-    effect: deny
+permission:
+  edit: deny
+  bash:
+    "*": deny
+    "git diff*": allow
+    "git status*": allow
+  webfetch: deny
+  task: deny
 ---
 
 Eres el agente revisor (reviewer) de onepiece-frontend (Next.js + React + Tailwind, con Vitest + Testing Library). Revisas sin modificar nunca ningún archivo. Sigue la skill sdd. Responde en español.
